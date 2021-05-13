@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>move</title>
+
+    <style>
+        html {
+            cursor: none;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #bg-div1 {
+            position: fixed;
+            background-color: #3e3e44;
+            width: 100%;
+            height: 100%;
+        }
+
+        #div1-box {
+            background-color: white;
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            margin: -50px 0 0 -50px;
+        }
+
+        #bg-div2 {
+            position: fixed;
+            left: 50%;
+            background-color: white;
+            width: 50%;
+            height: 100%;
+            display: none;
+        }
+
+        #div2-box {
+            background-color: #3e3e44;
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            margin: -50px 0 0 -50px;
+        }
+    </style>
+
+    <script>
+        // 介面模式
+        var v_mod = 1;
+
+        //定義一個變量，來表示移動的速度
+        var speed = 5;
+
+        //創建一個dirArr表示各個方向的集合
+        //通過修改dirArr的元素來影響移動的方向
+        var dirArr = [];
+
+        //開啓一個定時器，來控制div的移動
+        setInterval(function () {
+
+            var box1 = document.getElementById("div1-box");
+            var box2 = document.getElementById("div2-box");
+
+            if (v_mod == 1) {
+                // 遍歷 dirArr 的每一項，來修改方塊的方向
+                dirArr.forEach((item) => {
+                    switch (item) {
+                        // p1
+                        /*  65 A 左    87 W 上    68 D 右   83 S 下 */
+                        // p2
+                        /*  37 左      38 上      39 右     40 下  */
+                        case 37:
+                            if (two_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) > 50) {
+                                    box2.style.left = parseInt(box2.style.left.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.left = "100%"
+                                }
+                                if (reflex_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) < 50) {
+                                        box1.style.left = parseInt(box1.style.left.split("%")[0]) + speed + "%";
+                                    } else {
+                                        box1.style.left = "0%"
+                                    }
+                                }
+                                if (synchronize_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) > 0) {
+                                        box1.style.left = parseInt(box1.style.left.split("%")[0]) - speed + "%";
+                                    } else {
+                                        if (two_mod == true) {
+                                            box1.style.left = "50%";
+                                        } else {
+                                            box1.style.left = "100%";
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        case 65:
+                            if (two_mod == true && reflex_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) < 100) {
+                                    box2.style.left = parseInt(box2.style.left.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.left = "50%"
+                                }
+                            }
+                            if (synchronize_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) > 50) {
+                                    box2.style.left = parseInt(box2.style.left.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.left = "100%"
+                                }
+                            }
+                            if (parseInt(box1.style.left.split("%")[0]) > 0) {
+                                box1.style.left = parseInt(box1.style.left.split("%")[0]) - speed + "%";
+                            } else {
+                                if (two_mod == true) {
+                                    box1.style.left = "50%";
+                                } else {
+                                    box1.style.left = "100%";
+                                }
+                            }
+                            break;
+                        case 38:
+                            if (two_mod == true && reflex_mod == false && synchronize_mod == false) {
+                                if (parseInt(box2.style.top.split("%")[0]) > -5) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.top = "105%"
+                                }
+                                break;
+                            }
+                        case 87:
+                            if (parseInt(box1.style.top.split("%")[0]) > -5) {
+                                box1.style.top = parseInt(box1.style.top.split("%")[0]) - speed + "%";
+                            } else {
+                                box1.style.top = "105%"
+                            }
+                            if (two_mod == true && (reflex_mod == true || synchronize_mod == true)) {
+                                if (parseInt(box2.style.top.split("%")[0]) > -5) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.top = "105%"
+                                }
+                            }
+                            break;
+                        case 39:
+                            if (two_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) < 100) {
+                                    box2.style.left = parseInt(box2.style.left.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.left = "50%"
+                                }
+                                if (reflex_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) > 0) {
+                                        box1.style.left = parseInt(box1.style.left.split("%")[0]) - speed + "%";
+                                    } else {
+                                        if (two_mod == true) {
+                                            box1.style.left = "50%";
+                                        } else {
+                                            box1.style.left = "100%";
+                                        }
+                                    }
+                                }
+                                if (synchronize_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) < (two_mod ? 50 : 100)) {
+                                        box1.style.left = parseInt(box1.style.left.split("%")[0]) + speed + "%";
+                                    } else {
+                                        box1.style.left = "0%"
+                                    }
+                                }
+                                break;
+                            }
+                        case 68:
+                            if (two_mod == true && reflex_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) > 50) {
+                                    box2.style.left = parseInt(box2.style.left.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.left = "100%"
+                                }
+                            }
+                            if (synchronize_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) < 100) {
+                                    box2.style.left = parseInt(box2.style.left.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.left = "50%"
+                                }
+                            }
+                            if (parseInt(box1.style.left.split("%")[0]) < (two_mod ? 50 : 100)) {
+                                box1.style.left = parseInt(box1.style.left.split("%")[0]) + speed + "%";
+                            } else {
+                                box1.style.left = "0%"
+                            }
+                            break;
+                        case 40:
+                            if (two_mod == true && reflex_mod == false && synchronize_mod == false) {
+                                if (parseInt(box2.style.top.split("%")[0]) < 105) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.top = "-5%"
+                                }
+                                break;
+                            }
+                        case 83:
+                            if (parseInt(box1.style.top.split("%")[0]) < 105) {
+                                box1.style.top = parseInt(box1.style.top.split("%")[0]) + speed + "%";
+                            } else {
+                                box1.style.top = "-5%"
+                            }
+                            if (two_mod == true && (reflex_mod == true || synchronize_mod == true)) {
+                                if (parseInt(box2.style.top.split("%")[0]) < 105) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.top = "-5%"
+                                }
+                            }
+                            break;
+                    }
+                })
+            }
+            else if (v_mod == 2) {
+                /*  37 左   38 上   39 右   40 下  */
+                /*  65 A    87 W    68 D    83 S  */
+
+                // 遍歷 dirArr 的每一項，來修改小飛機的方向
+                dirArr.forEach((item) => {
+                    switch (item) {
+                        case 37:
+                            if (two_mod == true) {
+
+                                if (parseInt(box2.style.left.split("%")[0]) > 55) {
+                                    if (parseInt(box2.style.left.split("%")[0]) >= 97) {
+                                        box2.style.left = "95%"
+                                    } else {
+                                        box2.style.left = parseInt(box2.style.left.split("%")[0]) - speed + "%";
+                                    }
+                                } else {
+                                    box2.style.left = "53%";
+                                }
+                                if (reflex_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) < 45) {
+                                        if (parseInt(box1.style.left.split("%")[0]) <= 3) {
+                                            box1.style.left = "5%"
+                                        } else {
+                                            box1.style.left = parseInt(box1.style.left.split("%")[0]) + speed + "%";
+                                        }
+                                    } else {
+                                        box1.style.left = "47%";
+                                    }
+                                }
+                                if (synchronize_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) > 5) {
+                                        if (parseInt(box1.style.left.split("%")[0]) >= (two_mod ? 47 : 97)) {
+                                            box1.style.left = (two_mod ? "45%" : "95%");
+                                        } else {
+                                            box1.style.left = parseInt(box1.style.left.split("%")[0]) - speed + "%";
+                                        }
+                                    } else {
+                                        box1.style.left = "3%";
+                                    }
+                                }
+                                break;
+                            }
+                        case 65:
+                            if (parseInt(box1.style.left.split("%")[0]) > 5) {
+                                if (parseInt(box1.style.left.split("%")[0]) >= (two_mod ? 47 : 97)) {
+                                    box1.style.left = (two_mod ? "45%" : "95%");
+                                } else {
+                                    box1.style.left = parseInt(box1.style.left.split("%")[0]) - speed + "%";
+                                }
+                            } else {
+                                box1.style.left = "3%";
+                            }
+                            if (two_mod == true && reflex_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) < 95) {
+                                    if (parseInt(box2.style.left.split("%")[0]) <= 53) {
+                                        box2.style.left = "55%";
+                                    } else {
+                                        box2.style.left = parseInt(box2.style.left.split("%")[0]) + speed + "%";
+                                    }
+                                } else {
+                                    box2.style.left = "97%";
+                                }
+                            }
+                            if (synchronize_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) > 55) {
+                                    if (parseInt(box2.style.left.split("%")[0]) >= 97) {
+                                        box2.style.left = "95%"
+                                    } else {
+                                        box2.style.left = parseInt(box2.style.left.split("%")[0]) - speed + "%";
+                                    }
+                                } else {
+                                    box2.style.left = "53%";
+                                }
+                            }
+                            break;
+                        case 38:
+                            if (two_mod == true && reflex_mod == false && synchronize_mod == false) {
+                                if (parseInt(box2.style.top.split("%")[0]) > 5) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.top = "5%";
+                                }
+                                break;
+                            }
+                        case 87:
+                            if (parseInt(box1.style.top.split("%")[0]) > 5) {
+                                box1.style.top = parseInt(box1.style.top.split("%")[0]) - speed + "%";
+                            } else {
+                                box1.style.top = "5%";
+                            }
+                            if (two_mod == true && reflex_mod == true || synchronize_mod == true) {
+                                if (parseInt(box2.style.top.split("%")[0]) > 5) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) - speed + "%";
+                                } else {
+                                    box2.style.top = "5%";
+                                }
+                            }
+                            break;
+                        case 39:
+                            if (two_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) < 95) {
+                                    if (parseInt(box2.style.left.split("%")[0]) <= 53) {
+                                        box2.style.left = "55%";
+                                    } else {
+                                        box2.style.left = parseInt(box2.style.left.split("%")[0]) + speed + "%";
+                                    }
+                                } else {
+                                    box2.style.left = "97%";
+                                }
+                                if (reflex_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) > 5) {
+                                        if (parseInt(box1.style.left.split("%")[0]) >= 47) {
+                                            box1.style.left = "45%";
+                                        } else {
+                                            box1.style.left = parseInt(box1.style.left.split("%")[0]) - speed + "%";
+                                        }
+                                    } else {
+                                        box1.style.left = "3%";
+                                    }
+                                }
+                                if (synchronize_mod == true) {
+                                    if (parseInt(box1.style.left.split("%")[0]) < (two_mod ? 45 : 95)) {
+                                        if (parseInt(box1.style.left.split("%")[0]) <= 3) {
+                                            box1.style.left = "5%"
+                                        } else {
+                                            box1.style.left = parseInt(box1.style.left.split("%")[0]) + speed + "%";
+                                        }
+                                    } else {
+                                        box1.style.left = (two_mod ? "47%" : "97%");
+                                    }
+                                }
+                                break;
+                            }
+                        case 68:
+                            if (parseInt(box1.style.left.split("%")[0]) < (two_mod ? 45 : 95)) {
+                                if (parseInt(box1.style.left.split("%")[0]) <= 3) {
+                                    box1.style.left = "5%"
+                                } else {
+                                    box1.style.left = parseInt(box1.style.left.split("%")[0]) + speed + "%";
+                                }
+                            } else {
+                                box1.style.left = (two_mod ? "47%" : "97%");
+                            }
+                            if (two_mod == true && reflex_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) > 55) {
+                                    if (parseInt(box2.style.left.split("%")[0]) >= 97) {
+                                        box2.style.left = "95%"
+                                    } else {
+                                        box2.style.left = parseInt(box2.style.left.split("%")[0]) - speed + "%";
+                                    }
+                                } else {
+                                    box2.style.left = "53%";
+                                }
+                            }
+                            if (synchronize_mod == true) {
+                                if (parseInt(box2.style.left.split("%")[0]) < 95) {
+                                    if (parseInt(box2.style.left.split("%")[0]) <= 53) {
+                                        box2.style.left = "55%";
+                                    } else {
+                                        box2.style.left = parseInt(box2.style.left.split("%")[0]) + speed + "%";
+                                    }
+                                } else {
+                                    box2.style.left = "97%";
+                                }
+                            }
+                            break;
+                        case 40:
+                            if (two_mod == true && reflex_mod == false && synchronize_mod == false) {
+                                if (parseInt(box2.style.top.split("%")[0]) < 95) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.top = "95%";
+                                }
+                                break;
+                            }
+                        case 83:
+                            if (parseInt(box1.style.top.split("%")[0]) < 95) {
+                                box1.style.top = parseInt(box1.style.top.split("%")[0]) + speed + "%";
+                            } else {
+                                box1.style.top = "95%";
+                            }
+                            if (two_mod == true && (reflex_mod == true || synchronize_mod == true)) {
+                                if (parseInt(box2.style.top.split("%")[0]) < 95) {
+                                    box2.style.top = parseInt(box2.style.top.split("%")[0]) + speed + "%";
+                                } else {
+                                    box2.style.top = "95%";
+                                }
+                            }
+                            break;
+                    }
+                })
+
+            }
+
+
+        }, 30);
+
+
+
+        //爲document綁定一個按鍵按下的事件
+        document.onkeydown = function (event) {
+            event = event || window.event;
+
+            // 創建一個變量來接收 keyCode 值
+            var k = event.keyCode;
+
+            //創建一個標識來記錄當前 dirArr 裏面是否已經存在了相同的 keyCode 值
+            var flag = false
+
+            /*  37 左   38 上   39 右   40 下  */
+            /*  65 A    87 W    68 D    83 S  */
+            if (k == 37 || k == 38 || k == 39 || k == 40
+                || k == 65 || k == 87 || k == 68 || k == 83) {
+                // 遍歷 dirArr , 判斷裏面是否存在 與 k 相同的值，若有，則數組不改動，若無，則將 k 值 push 進 dirArr
+                dirArr.forEach(item => {
+                    if (item == k) {
+                        flag = true
+                    }
+                })
+                if (!flag) {
+                    dirArr.push(k);
+                }
+            }
+
+            switch (k) {
+                case 82:
+                    // R 重設
+                    if (two_mod == true) {
+                        document.getElementById("div1-box").style.top = "50%";
+                        document.getElementById("div1-box").style.left = "25%";
+                        document.getElementById("div2-box").style.top = "50%";
+                        document.getElementById("div2-box").style.left = "75%";
+                    } else {
+                        document.getElementById("div1-box").style.top = "50%";
+                        document.getElementById("div1-box").style.left = "50%";
+                    }
+                    break;
+                case 192:
+                    // ~ 換顏色
+                    changeColor();
+                    break;
+                case 70:
+                    // F 全屏
+                    changeFullScreen();
+                    break;
+                case 49:
+                    // 1 模式1 
+                    v_mod = 1;
+                    break;
+                case 50:
+                    // 2 模式2
+                    v_mod = 2;
+                    break;
+                case 51:
+                    // 3 模式3 (雙人模式開關)
+                    switch_two_mod();
+                    break;
+                case 52:
+                    // 4 模式4 (雙人模式 鏡像模式開關) 
+                    switch_reflex_mod();
+                    break;
+                case 53:
+                    // 4 模式4 (雙人模式 同步模式開關) 
+                    switch_synchronize_mod();
+                    break;
+                case 32:
+                    // 空白鍵 顯示鼠標
+                    document.body.style.cursor = "default";
+                    break;
+            }
+        };
+
+        // 每當有按鍵鬆開時，對方塊的方向做出改變
+        document.onkeyup = function (event) {
+            var k = event.keyCode;
+
+            /*  37 左   38 上   39 右   40 下  */
+            /*  65 A    87 W    68 D    83 S  */
+            if (k == 37 || k == 38 || k == 39 || k == 40
+                || k == 65 || k == 87 || k == 68 || k == 83) {
+                // 判斷 dirArr 裏面是否有與 K 相同的值，若有則去除
+                dirArr.some(function (item, index) {
+                    if (item == k) {
+                        dirArr.splice(index, 1)
+                    }
+                })
+            }
+            if (k == 32) {
+                document.body.style.cursor = "none";
+            }
+        };
+
+        // 切換顏色
+        var color_mod = 0;
+        function changeColor() {
+            var div1 = document.getElementById("bg-div1");
+            var box1 = document.getElementById("div1-box");
+            var div2 = document.getElementById("bg-div2");
+            var box2 = document.getElementById("div2-box");
+            if (color_mod == 0) {
+                div1.style.backgroundColor = "white";
+                box1.style.backgroundColor = "#3e3e44";
+                div2.style.backgroundColor = "#3e3e44";
+                box2.style.backgroundColor = "white";
+                color_mod = 1;
+            } else {
+                div1.style.backgroundColor = "#3e3e44";
+                box1.style.backgroundColor = "white";
+                div2.style.backgroundColor = "white";
+                box2.style.backgroundColor = "#3e3e44";
+                color_mod = 0;
+            }
+        }
+
+        // 进入全屏
+        function full() {
+            var docElm = document.documentElement;
+            //W3C 
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            }
+            //FireFox 
+            else if (docElm.mozRequestFullScreen) {
+                docElm.mozRequestFullScreen();
+            }
+            //Chrome等 
+            else if (docElm.webkitRequestFullScreen) {
+                docElm.webkitRequestFullScreen();
+            }
+            //IE11
+            else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            full_mod = true;
+        }
+
+        // 退出全屏
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+            else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
+            else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            full_mod = false;
+        }
+
+        // 切換全屏模式
+        var full_mod = false;
+        function changeFullScreen() {
+
+            if (full_mod == false) {
+                full();
+            } else {
+                exitFullscreen();
+            }
+        }
+
+        // 開關雙人模式
+        var two_mod = false;
+        function switch_two_mod() {
+            var box1 = document.getElementById("div1-box");
+
+            // 改變速度
+            // 開關div2
+            // 改變box1的X軸 
+            // 改變狀態
+
+            // 開啟
+            if (two_mod == false) {
+                speed = 2.5;
+
+                document.getElementById("bg-div2").style.display = "block";
+                document.getElementById("div2-box").style.top = "50%";
+                document.getElementById("div2-box").style.left = "75%";
+
+                box1.style.left = parseInt(box1.style.left.split("%")[0]) / 2 + "%"
+
+                two_mod = true;
+                // 關閉
+            } else if (two_mod == true) {
+                speed = 5;
+
+                document.getElementById("bg-div2").style.display = "none";
+
+                box1.style.left = parseInt(box1.style.left.split("%")[0]) * 2 + "%"
+
+                two_mod = false;
+                if (reflex_mod == true) {
+                    reflex_mod = false;
+                }
+                if (synchronize_mod == true) {
+                    synchronize_mod = false;
+                }
+            }
+        }
+
+        // 切換鏡像模式
+        var reflex_mod = false;
+        function switch_reflex_mod() {
+            if (two_mod == true) {
+                if (reflex_mod == true) {
+                    reflex_mod = false;
+                } else {
+                    if (synchronize_mod == true) {
+                        synchronize_mod = false;
+                    }
+                    reflex_mod = true;
+                }
+            }
+        }
+
+        // 切換同步模式
+        var synchronize_mod = false;
+        function switch_synchronize_mod() {
+            if (two_mod == true) {
+                if (synchronize_mod == true) {
+                    synchronize_mod = false;
+                } else {
+                    if (reflex_mod == true) {
+                        reflex_mod = false;
+                    }
+                    synchronize_mod = true;
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="bg-div1">
+        <div id="div1-box" style="top:50%;left:50%;"></div>
+    </div>
+    <div id="bg-div2">
+        <div id="div2-box" style="top:50%;left:75%;"></div>
+    </div>
+</body>
+
+</html>
